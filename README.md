@@ -4,7 +4,7 @@ Marketplais is a personal project aimed at creating a fully functional e-commerc
 
 __Tech Stack:__
 - Languages: Python, HTML, CSS, Javascript
-- Frameworks: Django
+- Frameworks: Django, Tailwind CSS
 - APIs: Stripe API
 
 Here's a demo of Marketplais:
