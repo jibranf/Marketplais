@@ -1,0 +1,69 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+  Dashboard
+{% endblock %}
+
+{% block content %}
+
+<style>
+  .list-items .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+  }
+</style>
+
+  <div class="mt-6 px-6 py-12 bg-neutral-100 rounded-xl list-items">
+    <h2 class="mb-12 text-2xl text-center"><b>My Items</b></h2>
+    <div class="grid grid-cols-3 gap-5 items-center">
+      {% for item in items %}
+        <div class="image-container">
+          <a href="{% url 'item:detail' item.id %}">
+            <div class="item-card">
+              <div class="image-wrapper">
+                <img src="{{ item.image.url }}" class="rounded-t-xl">
+              </div>
+  
+              <div class="p-6 bg-white rounded-b-xl hover:bg-sky-100">
+                <h2 class="text-2xl">{{ item.name }}</h2>
+                <p class="text-gray-500">${{ item.price|floatformat:2 }}</p>
+              </div>
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <script>
+    // Get all the item cards within the "Latest Postings" section
+    const itemCards = document.querySelectorAll('.list-items .item-card');
+  
+    let totalWidth = 0;
+    let numCards = 0;
+  
+    // Loop through each item card to calculate the total width
+    itemCards.forEach(card => {
+      const image = card.querySelector('img');
+      totalWidth += image.offsetWidth;
+      numCards++;
+    });
+  
+    // Calculate the average width
+    const averageWidth = totalWidth / numCards;
+  
+    // Set the average width for each item card and scale the image width accordingly
+    itemCards.forEach(card => {
+      card.style.width = `${averageWidth}px`;
+  
+      const image = card.querySelector('img');
+      const imageWidth = image.offsetWidth;
+      const scaleFactor = averageWidth / imageWidth;
+      image.style.width = `${imageWidth * scaleFactor}px`;
+    });
+  </script>
+
+{% endblock %}
+
+

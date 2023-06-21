@@ -1,0 +1,104 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ item.name }}{% endblock %}
+
+{% block script %} 
+<script src="https://js.stripe.com/v3/"></script>
+{% endblock script %}
+
+<style>
+  .button-container {
+      display: flex;
+      justify-content: space-between;
+  }
+</style>
+
+{% block content %}
+<div class="grid grid-cols-5 gap-6">
+  <div class="col-span-3 p-6 bg-gray-100 rounded-xl" style="display: flex; align-items: center; justify-content: center;">
+    <center><img src="{{ item.image.url }}" class="rounded-xl" style="display: inline-block;"></center>
+  </div>
+
+  <div class="col-span-2 p-6 bg-gray-100 rounded-xl">
+    <h1 class="mb-6 text-3xl">{{ item.name }}</h1>
+    <p class="text-gray-600"><strong>Price: </strong>${{ item.price|floatformat:2 }}</p>
+    <p class="text-gray-600"><strong>Seller: </strong>{{ item.creator.username }}</p>
+
+    {% if item.description %}
+      <p class="text-gray-600">
+        <strong class="text-gray-600">Description: </strong><br>
+        {{ item.description }}
+      </p>
+    {% endif %}
+
+    {% if request.user == item.creator %}
+      <div class="mt-6 p-6 bg-white rounded-xl">
+        <p>This is your item listing!</p>
+        <a href="{% url 'item:edit' item.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-blue-500 text-white rounded-xl hover:bg-blue-700">Edit</a>
+        <a href="{% url 'item:delete' item.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl hover:bg-red-700">Delete</a>
+      </div>
+    {% endif %}
+
+    {% if request.user != item.creator %}
+    <br>
+    <div class="button-container">
+      <a href="{% url 'conversation:new' item.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-blue-600 text-white rounded-xl hover:bg-blue-700" style="margin-right: 10px;">Contact Seller</a>
+      {% if request.user.is_authenticated %} 
+        <form action="{% url 'item:create-checkout-session' item.id %}" method="POST" class="inline-block">
+          {% csrf_token %}
+          <button type="submit" class="inline-block py-3 px-6 text-lg font-semibold bg-green-500 hover:bg-green-600 rounded-xl text-white">Purchase</button>
+        </form>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<div class="mt-6 px-6 py-12 bg-neutral-100 rounded-xl">
+  <h2 class="mb-12 text-2xl text-center"><b>Related Items</b></h2>
+  <div class="grid grid-cols-3 gap-5">
+    {% for related_item in related_items %}
+      <div class="image-container">
+        <a href="{% url 'item:detail' related_item.id %}">
+          <div class="item-card">
+            <div class="image-wrapper">
+              <img src="{{ related_item.image.url }}" class="rounded-t-xl">
+            </div>
+
+            <div class="p-6 bg-white rounded-b-xl hover:bg-sky-100">
+              <h2 class="text-2xl">{{ related_item.name }}</h2>
+              <p class="text-gray-500">${{ related_item.price|floatformat:2 }}</p>
+            </div>
+          </div>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  // Get all the image containers
+  const imageContainers = document.querySelectorAll('.image-container');
+
+  // Loop through each image container
+  imageContainers.forEach(container => {
+    // Get the corresponding image element
+    const image = container.querySelector('img');
+
+    // Get the width of the image
+    const imageWidth = image.offsetWidth;
+
+    // Set the width of the parent div containing the name and price
+    const itemDiv = container.querySelector('.p-6');
+    itemDiv.style.width = `${imageWidth}px`;
+
+    // Center the content within the item card (both horizontally and vertically)
+    const itemCard = container.querySelector('.item-card');
+    itemCard.style.display = 'flex';
+    itemCard.style.flexDirection = 'column';
+    itemCard.style.justifyContent = 'center';
+    itemCard.style.alignItems = 'center';
+  });
+</script>
+
+{% endblock %}

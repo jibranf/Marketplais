@@ -1,0 +1,23 @@
+{% extends "core/base.html" %}
+{% block title %} Payment Success {% endblock title%}
+
+
+{% block content %}
+<style>
+.centered-container {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+</style>
+
+<div class="centered-container">
+    <div>
+        <h1 style="font-size: 25px;">Your payment has been confirmed. </h1> 
+        <p> Be sure to contact the seller for updates on shipping </p>
+        <a href="{% url 'core:index' %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-blue-600 text-white rounded-xl hover:bg-blue-700">Return to Marketplais</a>
+    </div>
+</div>
+{% endblock content %}

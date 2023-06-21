@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+
+
+{% block title %}Contact Seller{% endblock %}
+
+{% block content %}
+<h1 class="mb-6 text-3xl"><b>New Message</b></h1>
+<form method="post" action=".">
+  {% csrf_token %}
+
+  <div class="space-y-4" bg-gray-200>
+    {{ form.as_p }}
+  </div>
+
+    {% if form.errors or form.non_field_errors %}
+        <div class="mb-3 p-6 bg-red-100 rounded-xl">
+          {% for field in form %}
+            {{field.errors}}
+          {% endfor %}
+          {{form.non_field_errors}}
+        </div>
+      {% endif %}
+
+  
+  <button class="mt-6 py-4 px-8 text-lg bg-orange-400 hover:bg-orange-600 rounded-xl text-white"><b>Send Message</b></button>
+</form>
+{% endblock %}
