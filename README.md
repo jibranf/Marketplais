@@ -9,4 +9,6 @@ Marketplais is a personal project aimed at creating a fully functional e-commerc
 - APIs: Stripe API
 
 
-Here's a demo of Marketplais:
+## __Demo:__ 
+Here's a demo of Marketplais and it's features
+
