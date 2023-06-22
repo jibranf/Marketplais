@@ -12,3 +12,6 @@ Marketplais is a personal project aimed at creating a fully functional e-commerc
 ## __Demo:__ 
 Here's a demo of Marketplais and it's features
 
+
+https://github.com/jibranf/Marketplais/assets/116676609/0b671ecd-86d0-4b17-9227-345ea75a858d
+
